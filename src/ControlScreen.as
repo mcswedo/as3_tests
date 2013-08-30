@@ -12,7 +12,7 @@ package
 			
 			var left:TextField = new TextField(200, 50, "Left = Left Arrow", "Verdana", 16, Color.BLACK, false);
 			var right:TextField = new TextField(200, 50, "Right = Right Arrow", "Verdana", 16, Color.BLACK, false);
-			var rotate:TextField = new TextField(200, 50, "Rotate = Up Arroow", "Verdana", 16, Color.BLACK, false);
+			var rotate:TextField = new TextField(200, 50, "Rotate = Up Arrow", "Verdana", 16, Color.BLACK, false);
 			var quit:TextField = new TextField(200, 50, "Esc to Exit", "Verdana", 16, Color.BLACK, false);
 			
 			left.x = 0;

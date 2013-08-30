@@ -2,7 +2,8 @@ package
 {
 	import starling.display.Sprite;
 	import starling.events.KeyboardEvent;
-
+	import starling.text.TextField;
+	
 	public class InputHandler extends Sprite
 	{		
 		public function InputHandler()
@@ -37,7 +38,14 @@ package
 		
 		private function onSpace():void
 		{
-			//remove the title screen, add the gameplay screen, begin gameplay
+			//hide the title screen, display the gameplay screen, begin gameplay
+			
+			//WELL AT LEAST I KNOW INPUT IS ACTUALLY WORKING
+			var poop:TextField = new TextField(250, 300, "POOP", "Verdana", 48);
+			this.stage.addChild(poop);
+			
+			//Game.swapScreen();
+			//Game.gameLoop();
 		}
 		
 		private function onESC():void
