@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TextureAtlas imagePath="spriteSheet.png">
+    <SubTexture name="pl_idle_001" x="1"   y="1" width="64" height="64" />
+    <SubTexture name="pl_idle_002" x="66"  y="1" width="64" height="64" />
+    <SubTexture name="pl_idle_003" x="131" y="1" width="64" height="64" />
+</TextureAtlas>
