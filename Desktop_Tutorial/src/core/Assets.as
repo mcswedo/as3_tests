@@ -8,30 +8,22 @@ package core
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-	//  We will need to package our images into textures, so import starling's Texture class.
-	//import starling.textures.Texture;
-	
 	public class Assets
-	{
-		//  This is how we embed an asset into Starling. This actually isn't completely working as intended. 
-		//  I wanted to have assets in the root folder in a folder called assets, but it would not let me -
-		//  This is instead using a folder inside root/src/core called assets.
-		//[Embed(source="assets/spriteSheet.png")]
-		//  We assign this embedded image to a Class - which should be named the same as the asset's name, without the extension.
-		//private static var spriteSheet:Class;
-		//  And then create a texture for it as well to be used in the game.
-		//public static var spriteSheetTexture:Texture;
-		
+	{	
 		// Embed the SpriteSheet XML
 		[Embed(source="assets/spriteSheet.xml", mimeType="application/octet-stream")]
 		private static const SpriteSheetXml:Class;
 		
-		// Embed the SpriteSheet Texture:
+		// Embed the SpriteSheet Texture - this is private because the texture will not be used, it will be assigned to a TextureAtlas.
 		[Embed(source="assets/spriteSheet.png")]
 		private static const SpriteSheetTexture:Class;
 		
+		//  Set up public static variables to hold the animations, as MovieClips. Public because need to be referenced in other scripts.
 		public static var pl_idle:MovieClip;
+		public static var pl_move:MovieClip;
+		public static var pl_shoot:MovieClip;
 		
+		//  Embed our background.
 		[Embed(source="assets/background.png")]
 		private static var background:Class;
 		
@@ -47,9 +39,15 @@ package core
 			var xml:XML = XML(new SpriteSheetXml());
 			var spriteSheet:TextureAtlas = new TextureAtlas(texture, xml);
 			
-			// create movie clip
-			pl_idle = new MovieClip(spriteSheet.getTextures("pl_idle_"), 6);
+			// To create a new MovieClip, we take the frames with the given name in the XML document, as well as a framerate.
+			pl_idle = new MovieClip(spriteSheet.getTextures("pl_idle_"), 6); 
 			pl_idle.loop = true;
+			
+			pl_move = new MovieClip(spriteSheet.getTextures("pl_move_"), 6);
+			pl_move.loop = true;
+			
+			pl_shoot = new MovieClip(spriteSheet.getTextures("pl_shoot_"), 6);
+			pl_shoot.loop = true;
 			
 			// the juggler is something that controls animations, and all animations need to be added to a juggler.
 			// this juggler is the default, standard one included in the core Starling class.
