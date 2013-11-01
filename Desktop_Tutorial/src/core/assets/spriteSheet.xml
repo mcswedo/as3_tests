@@ -9,4 +9,10 @@
     
     <!--  Player Shooting Animation Frames -->
     <SubTexture name="pl_shoot_001" x="131" y="1" width="64" height="64" />
+    
+    <!--  Enemy Animation Frames -->
+    <SubTexture name="enemy_idle_001" x="186" y="1" width="64" height="64" />
+    
+    <!--  Bullet Frame -->
+    <SubTexture name="projectile_001" x="241" y = "1" width="4" height="12" />
 </TextureAtlas>

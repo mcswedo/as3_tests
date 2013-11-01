@@ -25,6 +25,7 @@ package core
 		public var isDownArrowDown:Boolean = false;
 		public var isZKeyDown:Boolean = false;
 		public var isXKeyDown:Boolean = false;
+		public var isShiftKeyDown:Boolean = false;
 		public var isESCKeyDown:Boolean = false;
 		
 		public function onKeyDown(event:KeyboardEvent):void
@@ -51,6 +52,9 @@ package core
 					break;
 				case 40: //  Down Arrow;
 					isDownArrowDown = true;
+					break;
+				case 16: //  Left Shift;
+					isShiftKeyDown = true;
 					break;
 			}
 		}
@@ -79,6 +83,9 @@ package core
 					break;
 				case 40: //  Down Arrow;
 					isDownArrowDown = false;
+					break;
+				case 16: //  Left Shift;
+					isShiftKeyDown = false;
 					break;
 			}
 		}

@@ -1,16 +1,17 @@
 /*
-  Player.as - Player class. 
+Player.as - Player class. 
 */
 
 package objects
 {
-	import core.Assets; //  Used to set movieClips / animations.
-	import core.Game;  //  Used for global WIDTH and HEIGHT.
-	import core.InputHandler;  //  Used for input handling for movement of the player and shooting.
+	import core.Assets;
+	import core.Game;
+	import core.InputHandler;
 	
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import managers.PlayerProjectileManager;
 	
 	public class Player extends Sprite
 	{	
@@ -22,7 +23,7 @@ package objects
 			Assets.pl_idle,
 			Assets.pl_move,
 			Assets.pl_shoot
-			];
+		];
 		
 		//  Our array has three elements, so instead of referencing them by index, we can set up three static variables to check them.
 		//  When we want to enter our array, we use these names instead of the index, for the sake of clarity.
@@ -30,13 +31,21 @@ package objects
 		public static var MOVE:int = 1;
 		public static var SHOOT:int = 2;
 		
-		private var inputHandler:InputHandler; //  We need a reference to our InputHandler so we can move the player and shoot.
-		private var movementSpeed:int = 4; //  movement speed in pixels per frame.
+		private const BULLET_OFFSET_X:Number = 30;
 		
+		private var inputHandler:InputHandler; //  We need a reference to our InputHandler so we can move the player and shoot.
+		private var projectileManager:PlayerProjectileManager;
+		
+		private const FAST_MOVE_SPEED:Number = 300.0; //  Storing our FAST (normal) and SLOW movement speeds, so we can toggle between.
+		private const SLOW_MOVE_SPEED:Number = 150.0;
+		
+		private var movementSpeed:Number = FAST_MOVE_SPEED; //  movement speed, which will be multiplied by deltaTime.
+
 		// Our player's constructor sets up our reference, our default position (near the bottom middle of the screen)
-		public function Player(inputHandler:InputHandler)
+		public function Player(inputHandler:InputHandler, projectileManager:PlayerProjectileManager)
 		{
 			this.inputHandler = inputHandler;
+			this.projectileManager = projectileManager;
 			this.x = Game.WIDTH / 2 - 32;
 			this.y = Game.HEIGHT - 96;
 			
@@ -53,14 +62,35 @@ package objects
 		//  and look for collisions with enemy shots.
 		public function update():void
 		{
+			handleShooting();
 			handleMovement();
+		}
+		
+		private function handleShooting():void
+		{
+			//  If our player is pressing or holding the Z key (we're not limiting him by time / frames / anything - as fast as he wants to shoot, he can);
+			if(inputHandler.isZKeyDown)
+			{
+				setAnim(SHOOT);
+				projectileManager.create(x + BULLET_OFFSET_X, y); //  We create a new projectile at the player's x/y, offset to the center.
+			}
 		}
 		
 		//  handleMovement looks into our inputHandler class and takes the booleans for when keys are down, moving the player and changing its' animation.
 		public function handleMovement():void
 		{
-			//  Case of NO movement - When all arrow keys are NOT pressed down.
-			if(!inputHandler.isDownArrowDown && !inputHandler.isUpArrowDown && !inputHandler.isLeftArrowDown && !inputHandler.isRightArrowDown)
+			//  Handler for our multiple movement speeds. If the shift key is pressed, we move slower.
+			if(inputHandler.isShiftKeyDown)
+			{
+				movementSpeed = SLOW_MOVE_SPEED;
+			} 
+			else if (!inputHandler.isShiftKeyDown)
+			{
+				movementSpeed = FAST_MOVE_SPEED;
+			}
+			
+			//  Case of NO movement - When all arrow keys (and the shoot key) are NOT pressed down.
+			if(!inputHandler.isDownArrowDown && !inputHandler.isUpArrowDown && !inputHandler.isLeftArrowDown && !inputHandler.isRightArrowDown && !inputHandler.isZKeyDown)
 			{
 				setAnim(IDLE);
 			}
@@ -68,7 +98,7 @@ package objects
 			//  Movement left, by the movement speed, making sure the player stays within the bounding box of the screen.
 			if(inputHandler.isLeftArrowDown && this.x >= 0) 
 			{	
-				this.x -= movementSpeed;
+				x -= movementSpeed * Game.dt;
 				setAnim(MOVE);
 			}
 			
@@ -76,19 +106,19 @@ package objects
 			//  (since it is drawn from top left corner) never exceeds the gameplay window's right border.
 			if(inputHandler.isRightArrowDown && this.x <= Game.WIDTH - this.width) 
 			{
-				this.x += movementSpeed;
+				x += movementSpeed * Game.dt;
 				setAnim(MOVE);
 			}
 			
 			if(inputHandler.isUpArrowDown && this.y >= 0) 
 			{
-				this.y -= movementSpeed;
+				y -= movementSpeed * Game.dt;
 				setAnim(MOVE);
 			}
 			
 			if(inputHandler.isDownArrowDown && this.y <= Game.HEIGHT - this.height) 
 			{
-				this.y += movementSpeed;
+				y += movementSpeed * Game.dt;
 				setAnim(MOVE);
 			}
 		}

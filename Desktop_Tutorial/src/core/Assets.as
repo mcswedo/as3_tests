@@ -7,7 +7,8 @@ package core
 	import starling.display.MovieClip;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
-
+	import starling.display.Image;
+	
 	public class Assets
 	{	
 		// Embed the SpriteSheet XML
@@ -22,6 +23,10 @@ package core
 		public static var pl_idle:MovieClip;
 		public static var pl_move:MovieClip;
 		public static var pl_shoot:MovieClip;
+		
+		public static var enemy_idle:MovieClip;
+		
+		public static var playerProjectileTexture:Texture;
 		
 		//  Embed our background.
 		[Embed(source="assets/background.png")]
@@ -49,10 +54,15 @@ package core
 			pl_shoot = new MovieClip(spriteSheet.getTextures("pl_shoot_"), 6);
 			pl_shoot.loop = true;
 			
+			enemy_idle = new MovieClip(spriteSheet.getTextures("enemy_idle_"), 6);
+			enemy_idle.loop = true;
+			
 			// the juggler is something that controls animations, and all animations need to be added to a juggler.
 			// this juggler is the default, standard one included in the core Starling class.
 			Starling.juggler.add(pl_idle);
-			
+
+			playerProjectileTexture = spriteSheet.getTexture("projectile_001");		
+
 			backgroundTexture = Texture.fromBitmap(new background());
 			
 			
